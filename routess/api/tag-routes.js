@@ -6,23 +6,84 @@ const { Tag, Product, ProductTag } = require('../../../models');
 router.get('/', (req, res) => {
   // find all tags
   // be sure to include its associated Product data
+  try {
+    const tData = await Tag.findAll({
+      include: [{ model: Product }],
+  });
+  res.status(200).json(tData);
+   } catch(err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
 });
 
 router.get('/:id', (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
+  try {
+    const tData = await Tag.findByPk(req.params.id, {
+      include: [{ model: Product }],
+    });
+
+    if (!tData) {
+      res.status(404).json({ message: 'Nothing for that id!' });
+      return;
+    }
+
+    res.status(200).json(tData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.post('/', (req, res) => {
   // create a new tag
+  try {
+    const tData = await Tag.create({
+      tag_name: req.body.tag_name,
+    });
+    res.status(200).json(tData);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  try {
+    const tData = await Tag.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!tData[0]) {
+      res.status(404).json({ message: 'Nothing for that id!' });
+      return;
+    }
+    res.status(200).json(tData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  try {
+    const tData = await Tag.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!tData) {
+      res.status(404).json({ message: 'Nothing for  that id!' });
+      return;
+    }
+
+    res.status(200).json(tData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
