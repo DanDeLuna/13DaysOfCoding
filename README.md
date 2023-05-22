@@ -49,5 +49,5 @@ link to demo
 (https://drive.google.com/file/d/1iRK0DTH-1uEcv7xzwMi5MQLpFtqZ0-Mk/view)
 
 ## Credits
-
+Myself and notes from our of course work.
 
